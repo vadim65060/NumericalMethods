@@ -27,17 +27,17 @@ public:
         this->logLevel = logLevel;
     }
 
-    void Log(const std::string &funcName, double x, LogLevel level) {
+    void Log(const std::string &funcName, const double &x, LogLevel level, const std::string& text = "x") {
         if (level < logLevel) return;
-        std::cout << funcName << ":: x: " << x << std::endl;
+        std::cout << funcName << ":: " + text + ": " << x << std::endl;
     }
 
-    void Log(const std::string &funcName, std::pair<double, double> pair, LogLevel level) {
+    void Log(const std::string &funcName, const std::pair<double, double> &pair, LogLevel level) {
         if (level < logLevel) return;
         std::cout << funcName << ":: [a,b]: [" << pair.first << ',' << pair.second << ']' << std::endl;
     }
 
-    void Log(const std::string &funcName, Root root, LogLevel level) {
+    void Log(const std::string &funcName, const Root &root, LogLevel level) {
         if (level < logLevel) return;
         std::cout << funcName << ":: root:" << root.root << "; delta:" << root.delta << "; k:" << root.k << std::endl;
     }

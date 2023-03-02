@@ -16,26 +16,24 @@ int main() {
     std::cout << "f(x)=2x^2-2^x-5\n";
     std::cout << "a=" << a << "; b=" << b << "; eps=" << eps << std::endl;
     int n = 100;
-    auto methods = NumericalMethods(f, IMPORTANT);
+    auto logger= Logger(ALL);
+    auto methods = NumericalMethods(f, ANSWER);
     std::vector<std::pair<double, double>> rootsNeighborhood = methods.RootSeparation(a, b, n);
     std::cout << std::endl;
     for (auto el: rootsNeighborhood) {
+        logger.Log("main", el, ALL);
+
         Root root = methods.Bisection(el.first, el.second, eps);
-        std::cout << "f(x)=" << std::abs(f(root.root)) << std::endl;
-    }
-    std::cout << std::endl;
-    for (auto el: rootsNeighborhood) {
-        Root root = methods.NewtonMethod(el.first, el.second, df, eps);
-        std::cout << "f(x)=" << std::abs(f(root.root)) << std::endl;
-    }
-    std::cout << std::endl;
-    for (auto el: rootsNeighborhood) {
-        Root root = methods.ModifiedNewtonMethod(el.first, el.second, df, eps);
-        std::cout << "f(x)=" << std::abs(f(root.root)) << std::endl;
-    }
-    std::cout << std::endl;
-    for (auto el: rootsNeighborhood) {
-        Root root = methods.TangentsMethod(el.first, el.second, eps);
-        std::cout << "f(x)=" << std::abs(f(root.root)) << std::endl;
+        logger.Log("main",std::abs(f(root.root)),ALL,"|f(x)|");
+
+        root = methods.NewtonMethod(el.first, el.second, df, eps);
+        logger.Log("main",std::abs(f(root.root)),ALL,"|f(x)|");
+
+        root = methods.ModifiedNewtonMethod(el.first, el.second, df, eps);
+        logger.Log("main",std::abs(f(root.root)),ALL,"|f(x)|");
+
+        root = methods.TangentsMethod(el.first, el.second, eps);
+        logger.Log("main",std::abs(f(root.root)),ALL,"|f(x)|");
+        std::cout << std::endl;
     }
 }//230 строк
