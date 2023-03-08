@@ -7,7 +7,7 @@
 Root NumericalMethods::Bisection(double a, double b, double eps) {
     std::string methodName = "Bisection";
     int counter = 0;
-    logger.Log(methodName, {a, b}, IMPORTANT);
+    logger.Log(methodName, pair(a, b), IMPORTANT);
     do {
         counter++;
         double c = (a + b) / 2;
@@ -15,14 +15,14 @@ Root NumericalMethods::Bisection(double a, double b, double eps) {
             b = c;
         else
             a = c;
-        logger.Log(methodName, {a, b}, ALL);
+        logger.Log(methodName, pair(a, b), ALL);
     } while (b - a > eps);
     return GetRoot(methodName, a, b, counter);
 }
 
-std::vector<std::pair<double, double>> NumericalMethods::RootSeparation(double a, double b, int n) {
-    logger.Log("RootSeparation", {a, b}, IMPORTANT);
-    std::vector<std::pair<double, double>> rootsNeighborhood;
+vector<pair<double, double>> NumericalMethods::RootSeparation(double a, double b, int n) {
+    logger.Log("RootSeparation", pair(a, b), IMPORTANT);
+    vector<pair<double, double>> rootsNeighborhood;
     double h = (b - a) / n;
     double x1 = a, x2 = a + h;
     double y1 = func(x1);
@@ -34,16 +34,15 @@ std::vector<std::pair<double, double>> NumericalMethods::RootSeparation(double a
         x1 = x2;
         x2 += h;
         y1 = y2;
-        logger.Log("RootSeparation", {x1, x2}, ALL);
+        logger.Log("RootSeparation", pair(x1, x2), ALL);
     }
     logger.Log("RootSeparation", rootsNeighborhood, ANSWER);
     return rootsNeighborhood;
 }
 
-Root
-NumericalMethods::NewtonMethod(double a, double b, double (*df)(double), double eps, double p) {
+Root NumericalMethods::NewtonMethod(double a, double b, double (*df)(double), double eps, double p) {
     std::string methodName = "NewtonMethod";
-    logger.Log(methodName, {a, b}, IMPORTANT);
+    logger.Log(methodName, pair(a, b), IMPORTANT);
     double x2 = (a + b) / 2, x1 = a;
     int counter = 0;
     while (std::abs(x2 - x1) > eps) {
@@ -55,10 +54,9 @@ NumericalMethods::NewtonMethod(double a, double b, double (*df)(double), double 
     return GetRoot(methodName, x1, x2, counter);
 }
 
-Root
-NumericalMethods::ModifiedNewtonMethod(double a, double b, double (*df)(double), double eps, double p) {
+Root NumericalMethods::ModifiedNewtonMethod(double a, double b, double (*df)(double), double eps, double p) {
     std::string methodName = "ModifiedNewtonMethod";
-    logger.Log(methodName, {a, b}, IMPORTANT);
+    logger.Log(methodName, pair(a, b), IMPORTANT);
     double x2 = (a + b) / 2, x1 = a;
     double dfx0 = df(x2);
     int counter = 0;
@@ -73,7 +71,7 @@ NumericalMethods::ModifiedNewtonMethod(double a, double b, double (*df)(double),
 
 Root NumericalMethods::TangentsMethod(double a, double b, double eps, double p) {
     std::string methodName = "TangentsMethod";
-    logger.Log(methodName, {a, b}, IMPORTANT);
+    logger.Log(methodName, pair(a, b), IMPORTANT);
     double x2 = a, x1 = b;
     int counter = 0;
     while (std::abs(x2 - x1) > eps) {

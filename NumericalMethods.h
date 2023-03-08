@@ -11,6 +11,9 @@
 #include "Logger.h"
 #include "Root.h"
 
+using std::vector;
+using std::pair;
+
 class NumericalMethods {
 public:
     NumericalMethods(double (*func)(double), LogLevel logLevel) {
@@ -26,14 +29,26 @@ public:
 
     Root TangentsMethod(double a, double b, double eps = 1e-8, double p = 1);
 
-    std::vector<std::pair<double, double>> RootSeparation(double a, double b, int n);
+    vector<pair<double, double>> RootSeparation(double a, double b, int n);
+
+    vector<pair<double, double>> GetFuncValueTable(double a, double b, int n);
+
+    vector<pair<double, double>> SortTableForDX(vector<pair<double, double>> &table, double x);
+
+    Root InterpolationLagrangeMethod(const vector<pair<double, double>> &sortedTable, double x, int n);
+
+    Root InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable, double x, int n);
 
 private:
     double (*func)(double);
 
+    static double cmpX;
+
     Logger logger;
 
     Root GetRoot(const std::string &methodName, double x1, double x2, int counter);
+
+    static bool cmpDX(pair<double, double> a, pair<double, double> b);
 };
 
 #endif //NUMERICALMETHODS_NUMERICALMETHODS_H

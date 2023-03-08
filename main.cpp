@@ -11,7 +11,11 @@ double df(double x) {
     return 4 * x - pow(2, x) * std::log(2);
 }
 
-int main() {
+double f2(double x){
+    return x*x;
+}
+
+void lab1() {
     auto reader = Reader<double>(true);
     double a = reader.Read("a=", -3), b = reader.Read("b=", 7);
     double eps = 1e-5;
@@ -40,4 +44,24 @@ int main() {
         logger.Log("main", std::abs(f(root.root)), ALL, "|f(x)|");
         std::cout << std::endl;
     }
-}//230 строк
+}
+
+void lab2() {
+    auto reader = Reader<double>(true);
+    auto intReader = Reader<int>(true);
+    int m = intReader.Read("m+1=", 4) - 1;
+    double a = reader.Read("a=", 1), b = reader.Read("b=", 4);
+    auto methods = NumericalMethods(f2, ALL);
+
+    std::vector<std::pair<double, double>> table = methods.GetFuncValueTable(a, b, m);
+    double x = reader.Read("x=", -1);
+    methods.SortTableForDX(table, x);
+
+    int n = intReader.Read("n=", 3);
+    methods.InterpolationLagrangeMethod(table, x, n);
+    methods.InterpolationNewtonMethod(table, x, n);
+}
+
+int main() {
+    lab2();
+}

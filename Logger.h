@@ -27,7 +27,7 @@ public:
         this->logLevel = logLevel;
     }
 
-    void Log(const std::string &funcName, const double &x, LogLevel level, const std::string& text = "x") {
+    void Log(const std::string &funcName, const double &x, LogLevel level, const std::string &text = "x") {
         if (level < logLevel) return;
         std::cout << funcName << ":: " + text + ": " << x << std::endl;
     }
@@ -39,13 +39,34 @@ public:
 
     void Log(const std::string &funcName, const Root &root, LogLevel level) {
         if (level < logLevel) return;
-        std::cout << funcName << ":: root:" << root.root << "; delta:" << root.delta << "; k:" << root.k << std::endl;
+        std::cout << funcName << ":: root:" << root.root << "; delta:" << root.delta;
+        if (root.k != 0)
+            std::cout << "; k:" << root.k;
+        std::cout << std::endl;
     }
 
     void Log(const std::string &funcName, const std::vector<std::pair<double, double>> &roots, LogLevel level) {
         if (level < logLevel) return;
         for (auto root: roots) {
             Log(funcName, root, level);
+        }
+    }
+
+    void Log(const std::string &funcName, const std::vector<double> &vector, LogLevel level) {
+        if (level < logLevel) return;
+        if (!funcName.empty())
+            std::cout << funcName << ":: ";
+        for (auto el: vector) {
+            std::cout << el << ' ';
+        }
+        std::cout << std::endl;
+    }
+
+    void Log(const std::string &funcName, const std::vector<std::vector<double>> &vector, LogLevel level) {
+        if (level < logLevel) return;
+        std::cout << funcName << "\n";
+        for (int i = 0; i < vector.size(); ++i) {
+            Log(std::to_string(i), vector[i], level);
         }
     }
 
