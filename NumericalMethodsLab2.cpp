@@ -13,14 +13,14 @@ vector<pair<double, double>> NumericalMethods::GetFuncValueTable(double a, doubl
         double x = a + i * h;
         table.emplace_back(x, func(x));
     }
-    logger.Log("GetFuncValueTable", table, ANSWER);
+    logger.Log("GetFuncValueTable", table, IMPORTANT);
     return table;
 }
 
 vector<pair<double, double>> NumericalMethods::SortTableForDX(vector<pair<double, double>> &table, double x) {
     cmpX = x;
     std::sort(table.begin(), table.end(), cmpDX);
-    logger.Log("SortTableForDX", table, ANSWER);
+    logger.Log("SortTableForDX", table, IMPORTANT);
     return table;
 }
 
@@ -56,16 +56,16 @@ Root NumericalMethods::InterpolationNewtonMethod(const vector<pair<double, doubl
     }
     for (int i = 2; i <= n + 1; ++i) {
         for (int j = 0; j < n - i + 2; ++j) {
-            A[j].push_back((A[j + 1][i - 1] - A[j][i - 1]) / (A[j + 1][0] - A[j][0]));
+            A[j].push_back((A[j + 1][i - 1] - A[j][i - 1]) / (A[j + i - 2 + 1][0] - A[j][0]));
         }
     }
     logger.Log(methodName, A, IMPORTANT);
-    double P = 0;
+    double P = sortedTable[0].second;
     double dx = 1;
-    for (int i = 1; i <= n + 1; ++i) {
+    for (int i = 1; i <= n; ++i) {
         dx *= (x - sortedTable[i - 1].first);
         logger.Log(methodName, dx, ALL);
-        P += A[0][i] * dx;
+        P += A[0][i + 1] * dx;
     }
     double delta = std::abs(P - func(x));
     Root answer = {P, delta, 0};
