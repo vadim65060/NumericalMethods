@@ -30,7 +30,7 @@ double ddFunc3_2(double x) {
 
 vector<pair<double, double>> SwapTable(const vector<pair<double, double>> &table) {
     vector<pair<double, double>> swappedTable = table;
-    for (auto el: swappedTable) {
+    for (auto &el: swappedTable) {
         std::swap(el.first, el.second);
     }
     return swappedTable;
