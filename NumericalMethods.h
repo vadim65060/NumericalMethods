@@ -8,6 +8,7 @@
 #include <utility>
 #include <tuple>
 #include <vector>
+#include <valarray>
 #include "Logger.h"
 #include "Root.h"
 
@@ -16,8 +17,8 @@ using std::pair;
 
 class NumericalMethods {
 public:
-    NumericalMethods(double (*func)(double), LogLevel logLevel) {
-        this->func = func;
+    NumericalMethods(std::function<double(double)> func, LogLevel logLevel) {
+        this->func = std::move(func);
         logger = Logger(logLevel);
     }
 
@@ -39,8 +40,16 @@ public:
 
     Root InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable, double x, int n);
 
+    Root InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable, const vector<double> &coefficients,
+                                   double x);
+
+    vector<double> InterpolationNewtonCoefficients(const vector<pair<double, double>> &sortedTable, int n);
+
+    std::function<double(double)>
+    Polynomial(vector<pair<double, double>> &sortedTable, vector<double> &coefficients, double diff);
+
 private:
-    double (*func)(double);
+    std::function<double(double)> func;
 
     static double cmpX;
 

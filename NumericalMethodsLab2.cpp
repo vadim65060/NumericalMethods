@@ -47,8 +47,9 @@ Root NumericalMethods::InterpolationLagrangeMethod(const vector<pair<double, dou
     return answer;
 }
 
-Root NumericalMethods::InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable, double x, int n) {
-    std::string methodName = "InterpolationNewton";
+vector<double>
+NumericalMethods::InterpolationNewtonCoefficients(const vector<pair<double, double>> &sortedTable, int n) {
+    std::string methodName = "InterpolationNewtonCoefficients";
     vector<vector<double>> A(n + 1);
     for (int i = 0; i <= n; ++i) {
         A[i].push_back(sortedTable[i].first);
@@ -59,16 +60,31 @@ Root NumericalMethods::InterpolationNewtonMethod(const vector<pair<double, doubl
             A[j].push_back((A[j + 1][i - 1] - A[j][i - 1]) / (A[j + i - 2 + 1][0] - A[j][0]));
         }
     }
-    logger.Log(methodName, A, IMPORTANT);
+    logger.Log(methodName, A, ALL);
+    vector<double> coefficients(n);
+    for (int i = 0; i < n; ++i) {
+        coefficients[i] = A[0][i + 2];
+    }
+    logger.Log(methodName, coefficients, IMPORTANT);
+    return coefficients;
+}
+
+Root NumericalMethods::InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable,
+                                                 const vector<double> &coefficients, double x) {
+    std::string methodName = "InterpolationNewton";
     double P = sortedTable[0].second;
     double dx = 1;
-    for (int i = 1; i <= n; ++i) {
-        dx *= (x - sortedTable[i - 1].first);
-        logger.Log(methodName, dx, ALL);
-        P += A[0][i + 1] * dx;
+    for (int i = 0; i < coefficients.size(); ++i) {
+        dx *= (x - sortedTable[i].first);
+        P += coefficients[i] * dx;
     }
     double delta = std::abs(P - func(x));
     Root answer = {P, delta, 0};
     logger.Log(methodName, answer, ANSWER);
     return answer;
+}
+
+Root NumericalMethods::InterpolationNewtonMethod(const vector<pair<double, double>> &sortedTable, double x, int n) {
+    vector<double> coefficients = InterpolationNewtonCoefficients(sortedTable, n);
+    return InterpolationNewtonMethod(sortedTable, coefficients, x);
 }
