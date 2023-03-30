@@ -8,6 +8,7 @@
 #include <iostream>
 #include <tuple>
 #include <vector>
+#include <iomanip>
 #include "Root.h"
 
 enum LogLevel {
@@ -57,7 +58,7 @@ public:
         if (!funcName.empty())
             std::cout << funcName << ":: ";
         for (auto el: vector) {
-            std::cout << el << ' ';
+            std::cout << std::setw(13) << el << ' ';
         }
         std::cout << std::endl;
     }

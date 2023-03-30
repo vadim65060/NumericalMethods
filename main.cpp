@@ -1,5 +1,5 @@
 #include "labs/lab3.h"
 
 int main() {
-    lab3();
+    lab3_2();
 }

@@ -5,6 +5,8 @@
 #ifndef NUMERICALMETHODS_LAB3_H
 #define NUMERICALMETHODS_LAB3_H
 
-void lab3();
+[[maybe_unused]] void lab3();
+
+[[maybe_unused]] void lab3_2();
 
 #endif //NUMERICALMETHODS_LAB3_H

@@ -48,6 +48,10 @@ public:
     std::function<double(double)>
     Polynomial(vector<pair<double, double>> &sortedTable, vector<double> &coefficients, double diff);
 
+    double df(double x, double h, int index);
+
+    double ddf(double x, double h, int index);
+
 private:
     std::function<double(double)> func;
 
