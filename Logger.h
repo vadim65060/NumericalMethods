@@ -34,7 +34,7 @@ public:
 
     void Log(const std::string &funcName, const std::pair<double, double> &pair, LogLevel level) {
         if (level < logLevel) return;
-        std::cout << funcName << ":: [a,b]: [" << pair.first << ',' << pair.second << ']' << std::endl;
+        std::cout << funcName << ":: [a,b]: [" << pair.first << ", " << pair.second << ']' << std::endl;
     }
 
     void Log(const std::string &funcName, const Root &root, LogLevel level) {
