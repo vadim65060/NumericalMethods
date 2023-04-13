@@ -52,6 +52,14 @@ public:
 
     double ddf(double x, double h, int index);
 
+    double TableDf(const vector<pair<double, double>> &table, int i);
+
+    vector<double> TableDf(const vector<pair<double, double>> &table);
+
+    double TableDdf(const vector<pair<double, double>> &table, int i);
+
+    vector<double> TableDdf(const vector<pair<double, double>> &table);
+
 private:
     std::function<double(double)> func;
 

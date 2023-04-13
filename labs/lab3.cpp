@@ -36,6 +36,12 @@ vector<pair<double, double>> SwapTable(const vector<pair<double, double>> &table
     return swappedTable;
 }
 
+void AddVectorToTable(vector<vector<double>> &table, const vector<double> &vector1) {
+    for (int i = 0; i < vector1.size(); ++i) {
+        table[i].push_back(vector1[i]);
+    }
+}
+
 [[maybe_unused]] void lab3() {
     auto reader = Reader<double>(true);
     auto intReader = Reader<int>(true);
@@ -80,18 +86,33 @@ vector<pair<double, double>> SwapTable(const vector<pair<double, double>> &table
         double a = reader.Read("a=", 0), b = reader.Read("b=", 1);
 
         vector<pair<double, double>> table = methods.GetFuncValueTable(a, b, m);
+        vector<vector<double>> tableDf(m + 1);
 
-        double h = 0.0069;
-        vector<vector<double>> tableDf(m);
-        for (int i = 0; i < m; ++i) {
-            double x = table[i].first;
-            tableDf[i].push_back(x);
+        for (int i = 0; i < m + 1; ++i) {
+            tableDf[i].push_back(table[i].first);
             tableDf[i].push_back(table[i].second);
-            tableDf[i].push_back(methods.df(x, h, i));
-            tableDf[i].push_back(std::abs(dFunc3_2(x) - tableDf[i][2]));
-            tableDf[i].push_back(methods.ddf(x, h, i));
-            tableDf[i].push_back(std::abs(ddFunc3_2(x) - tableDf[i][4]));
         }
+
+        AddVectorToTable(tableDf, methods.TableDf(table));
+        for (int i = 0; i < m + 1; ++i) {
+            tableDf[i].push_back(std::abs(dFunc3_2(table[i].first) - tableDf[i][2]));
+        }
+
+        AddVectorToTable(tableDf, methods.TableDdf(table));
+        for (int i = 0; i < m + 1; ++i) {
+            tableDf[i].push_back(std::abs(ddFunc3_2(table[i].first) - tableDf[i][4]));
+        }
+
+//        double h = (b - a) / m;
+//        for (int i = 0; i < m+1; ++i) {
+//            double x = table[i].first;
+//            tableDf[i].push_back(x);
+//            tableDf[i].push_back(table[i].second);
+//            tableDf[i].push_back(methods.df(x, h, i));
+//            tableDf[i].push_back(std::abs(dFunc3_2(x) - tableDf[i][2]));
+//            tableDf[i].push_back(methods.ddf(x, h, i));
+//            tableDf[i].push_back(std::abs(ddFunc3_2(x) - tableDf[i][4]));
+//        }
         Logger logger = Logger();
         int wrap = 14;
         std::cout << std::setw(wrap) << "x" << std::setw(wrap) << "f(x)" << std::setw(wrap) << "f'(x)"
