@@ -22,6 +22,7 @@ public:
         logger = Logger(logLevel);
     }
 
+    //lab1
     Root Bisection(double a, double b, double eps = 1e-8);
 
     Root NewtonMethod(double a, double b, double (*df)(double), double eps = 1e-8, double p = 1);
@@ -32,6 +33,7 @@ public:
 
     vector<pair<double, double>> RootSeparation(double a, double b, int n);
 
+    //lab2
     vector<pair<double, double>> GetFuncValueTable(double a, double b, int n);
 
     vector<pair<double, double>> SortTableForDX(vector<pair<double, double>> &table, double x);
@@ -45,6 +47,7 @@ public:
 
     vector<double> InterpolationNewtonCoefficients(const vector<pair<double, double>> &sortedTable, int n);
 
+    //lab3
     std::function<double(double)>
     Polynomial(vector<pair<double, double>> &sortedTable, vector<double> &coefficients, double diff);
 
@@ -59,6 +62,19 @@ public:
     double TableDdf(const vector<pair<double, double>> &table, int i);
 
     vector<double> TableDdf(const vector<pair<double, double>> &table);
+
+    //lab4
+    double RightRectangleArea(double a, double b, int n);
+
+    double LeftRectangleArea(double a, double b, int n);
+
+    double MediumRectangleArea(double a, double b, int n);
+
+    double TrapezoidArea(double a, double b, int n);
+
+    double SimpsonArea(double a, double b, int n);
+
+    double ThreeEighthsArea(double a, double b, int n);
 
 private:
     std::function<double(double)> func;

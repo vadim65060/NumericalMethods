@@ -1,5 +1,5 @@
-#include "labs/lab3.h"
+#include "labs/lab4.h"
 
 int main() {
-    lab3_2();
+    lab4();
 }
