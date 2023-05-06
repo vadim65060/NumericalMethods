@@ -8,11 +8,11 @@
 
 #include <cmath>
 
-double fx0(double x){
+double fx0(double x) {
     return 1;
 }
 
-double dFx0(double x){
+double dFx0(double x) {
     return x;
 }
 
@@ -57,17 +57,16 @@ double dfSin(double x) {
 
     NumericalMethods methods = NumericalMethods(func, NOTHING);
     double accurateDf = dFunc(b) - dFunc(a);
-
-    vector<double> area = {methods.LeftRectangleArea(a, b, n), methods.RightRectangleArea(a, b, n),
-                           methods.MediumRectangleArea(a, b, n), methods.TrapezoidArea(a, b, n),
-                           methods.SimpsonArea(a, b, n), methods.ThreeEighthsArea(a, b, n)};
+    std::cout << "Area" << accurateDf << '\n';
+    vector<Root> area = {methods.LeftRectangleArea(a, b, n), methods.RightRectangleArea(a, b, n),
+                         methods.MediumRectangleArea(a, b, n), methods.TrapezoidArea(a, b, n),
+                         methods.SimpsonArea(a, b, n), methods.ThreeEighthsArea(a, b, n)};
     vector<std::string> methodNames = {"LeftRectangleArea", "RightRectangleArea", "MediumRectangleArea",
                                        "TrapezoidArea", "SimpsonArea", "ThreeEighthsArea"};
     for (int i = 0; i < area.size(); ++i) {
         std::cout << methodNames[i] << '\n';
-        std::cout << "area = " << area[i] << '\n';
-        std::cout << "delta = " << std::abs(area[i] - accurateDf) << '\n' << '\n';
+        std::cout << "area = " << area[i].root << '\n';
+        std::cout << "delta = " << std::abs(area[i].root - accurateDf) << '\n';
+        std::cout << "teoretical delta: " << area[i].delta << '\n' << '\n';
     }
-
-
 }

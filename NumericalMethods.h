@@ -51,9 +51,11 @@ public:
     std::function<double(double)>
     Polynomial(vector<pair<double, double>> &sortedTable, vector<double> &coefficients, double diff);
 
-    double df(double x, double h, int index);
+    double df(double x, double h);
 
-    double ddf(double x, double h, int index);
+    double ddf(double x, double h);
+
+    double d4f(double x, double h);
 
     double TableDf(const vector<pair<double, double>> &table, int i);
 
@@ -64,17 +66,17 @@ public:
     vector<double> TableDdf(const vector<pair<double, double>> &table);
 
     //lab4
-    double RightRectangleArea(double a, double b, int n);
+    Root RightRectangleArea(double a, double b, int n);
 
-    double LeftRectangleArea(double a, double b, int n);
+    Root LeftRectangleArea(double a, double b, int n);
 
-    double MediumRectangleArea(double a, double b, int n);
+    Root MediumRectangleArea(double a, double b, int n);
 
-    double TrapezoidArea(double a, double b, int n);
+    Root TrapezoidArea(double a, double b, int n);
 
-    double SimpsonArea(double a, double b, int n);
+    Root SimpsonArea(double a, double b, int n);
 
-    double ThreeEighthsArea(double a, double b, int n);
+    Root ThreeEighthsArea(double a, double b, int n);
 
 private:
     std::function<double(double)> func;
@@ -86,6 +88,10 @@ private:
     Root GetRoot(const std::string &methodName, double x1, double x2, int counter);
 
     static bool cmpDX(pair<double, double> a, pair<double, double> b);
+
+    double SearchMaximumDerivative(double a, double b, int power);
+
+    double (NumericalMethods::*derivativeFunc)(double, double);
 };
 
 #endif //NUMERICALMETHODS_NUMERICALMETHODS_H

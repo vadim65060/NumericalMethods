@@ -12,24 +12,16 @@ NumericalMethods::Polynomial(vector<pair<double, double>> &sortedTable, vector<d
     return glambda;
 }
 
-double NumericalMethods::df(double x, double h, int index) {
-    if (index >= 1) {
-        return (func(x + h) - func(x - h)) / (2.0 * h); // Погрешность = f'''(e)/6(-h^2)
-    } else {
-        if (index == 0) {
-            return (-3 * func(x) + 4 * func(x + h) - func(x + 2 * h)) / (2.0 * h); // Погрешность = f'''(e)/3(h^2)
-        } else {
-            return (3 * func(x) - 4 * func(x - h) + func(x - 2 * h)) / (2.0 * h); // Погрешность = f'''(e)/3(h^2)
-        }
-    }
+double NumericalMethods::df(double x, double h) {
+    return (func(x + h) - func(x - h)) / (2.0 * h);
 }
 
-double NumericalMethods::ddf(double x, double h, int index) {
-    if (index < 0) {
-        return NAN;
-    } else {
-        return (func(x + h) - 2 * func(x) + func(x - h)) / (h * h);// Погрешность = h^2/12 * f^(4)(e)
-    }
+double NumericalMethods::ddf(double x, double h) {
+    return (func(x + h) - 2 * func(x) + func(x - h)) / (h * h);
+}
+
+double NumericalMethods::d4f(double x, double h) {
+    return (func(x - 2 * h) - 4 * func(x - h) + 6 * func(x) - 4 * func(x + h) + func(x + 2 * h)) / (std::pow(h, 4));
 }
 
 double NumericalMethods::TableDf(const vector<pair<double, double>> &table, int i) {
