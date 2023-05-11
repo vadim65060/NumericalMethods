@@ -49,15 +49,16 @@ double dfSin(double x) {
 }
 
 [[maybe_unused]] void lab4() {
-    std::function<double(double)> func = fx1;
-    std::function<double(double)> dFunc = dFx1;
-    auto reader = Reader<double>(true);
+    std::function<double(double)> func = fx3;
+    std::function<double(double)> dFunc = dFx3;
+    auto reader = Reader<double>();
+    auto readerInt = Reader<int>();
     double a = reader.Read("a=", 0), b = reader.Read("b=", 1);
-    int n = 1;
+    int n = readerInt.Read("m=", 10);
 
     NumericalMethods methods = NumericalMethods(func, NOTHING);
     double accurateDf = dFunc(b) - dFunc(a);
-    std::cout << "Area" << accurateDf << '\n';
+    std::cout << "Area= " << accurateDf << '\n';
     vector<Root> area;
 
     for (int i = LEFT_RECTANGLE_AREA; i <= THREE_EIGHTHS_AREA; ++i) {
@@ -77,8 +78,8 @@ double dfSin(double x) {
 [[maybe_unused]] void lab4_3() {
     std::function<double(double)> func = fx3;
     std::function<double(double)> dFunc = dFx3;
-    auto reader = Reader<double>(true);
-    auto readerInt = Reader<int>(true);
+    auto reader = Reader<double>();
+    auto readerInt = Reader<int>();
     double a = reader.Read("a=", 0), b = reader.Read("b=", 1);
     int n = readerInt.Read("m=", 1), l = readerInt.Read("l=", 10);
 
@@ -90,19 +91,22 @@ double dfSin(double x) {
                                        "TrapezoidArea", "SimpsonArea", "ThreeEighthsArea"};
 
     for (int i = LEFT_RECTANGLE_AREA; i <= SIMPSON_AREA; ++i) {
-        Root area = methods.CalculateArea(AreaFunc(i), a, b, n * l);
+        Root area = methods.CalculateArea(AreaFunc(i), a, b, n);
         std::cout << methodNames[i] << '\n';
+        std::cout << "--m--" << '\n';
         std::cout << "area = " << area.root << '\n';
         std::cout << "delta = " << std::abs(area.root - accurateDf) << '\n';
         std::cout << "theoretical delta: " << area.delta << "\n\n";
-    }
 
-    std::cout << "--------------------------\n";
+        Root area2 = methods.CalculateArea(AreaFunc(i), a, b, n*l);
+        std::cout << "--m*l--" << '\n';
+        std::cout << "area = " << area2.root << '\n';
+        std::cout << "delta = " << std::abs(area2.root - accurateDf) << '\n';
+        std::cout << "theoretical delta: " << area2.delta << "\n\n";
 
-    for (int i = LEFT_RECTANGLE_AREA; i <= SIMPSON_AREA; ++i) {
-        double area = methods.RungeArea(AreaFunc(i), a, b, n, l);
+        double area3 = methods.RungeArea(AreaFunc(i), a, b, n, l);
         std::cout << "Runge " + methodNames[i] << '\n';
-        std::cout << "area = " << area << '\n';
-        std::cout << "delta = " << std::abs(area - accurateDf) << "\n\n";
+        std::cout << "area = " << area3 << '\n';
+        std::cout << "delta = " << std::abs(area3 - accurateDf) << "\n\n";
     }
 }
