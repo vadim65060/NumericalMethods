@@ -4,6 +4,17 @@
 #include <cassert>
 #include "NumericalMethods.h"
 
+Root NumericalMethods::CalculateArea(AreaFunc areaFunc, double a, double b, int n) {
+    return (this->*_areaFuncSelector[areaFunc])(a, b, n);
+}
+
+double NumericalMethods::RungeArea(AreaFunc areaFunc, double a, double b, int n, int l) {
+    Root areaN = CalculateArea(areaFunc, a, b, n);
+    Root areaNL = CalculateArea(areaFunc, a, b, n * l);
+    double temp = std::pow(l, _areaDerivativeIndex[areaFunc]);
+    return (temp * areaNL.root - areaN.root) / (temp - 1);
+}
+
 Root NumericalMethods::LeftRectangleArea(double a, double b, int n) {
     std::string methodName = "LeftRectangleArea";
     logger.Log(methodName, vector{a, b, n * 1.0}, IMPORTANT);
@@ -106,22 +117,20 @@ double NumericalMethods::SearchMaximumDerivative(double a, double b, int power) 
     double mx = -1;
     switch (power) {
         case 1:
-            derivativeFunc = &NumericalMethods::df;
+            _derivativeFunc = &NumericalMethods::df;
             break;
         case 2:
-            derivativeFunc = &NumericalMethods::ddf;
+            _derivativeFunc = &NumericalMethods::ddf;
             break;
-        case 3:
-            assert(false && "missing power");
         case 4:
-            derivativeFunc = &NumericalMethods::d4f;
+            _derivativeFunc = &NumericalMethods::d4f;
             break;
         default:
             assert(false && "missing power");
     }
     for (int i = 0; i < n; ++i) {
         double x = a + h * i;
-        double df = (this->*derivativeFunc)(x, derivativeH);
+        double df = (this->*_derivativeFunc)(x, derivativeH);
         mx = std::max(mx, df);
     }
     return mx;

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "NumericalMethods.h"
 
-double NumericalMethods::cmpX;
+double NumericalMethods::_cmpX;
 
 vector<pair<double, double>> NumericalMethods::GetFuncValueTable(double a, double b, int n) {
     vector<pair<double, double>> table;
@@ -18,14 +18,14 @@ vector<pair<double, double>> NumericalMethods::GetFuncValueTable(double a, doubl
 }
 
 vector<pair<double, double>> NumericalMethods::SortTableForDX(vector<pair<double, double>> &table, double x) {
-    cmpX = x;
+    _cmpX = x;
     std::sort(table.begin(), table.end(), cmpDX);
     logger.Log("SortTableForDX", table, IMPORTANT);
     return table;
 }
 
 bool NumericalMethods::cmpDX(pair<double, double> a, pair<double, double> b) {
-    return std::abs(a.first - cmpX) <= std::abs(b.first - cmpX);
+    return std::abs(a.first - _cmpX) <= std::abs(b.first - _cmpX);
 }
 
 Root NumericalMethods::InterpolationLagrangeMethod(const vector<pair<double, double>> &sortedTable, double x, int n) {

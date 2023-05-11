@@ -15,6 +15,15 @@
 using std::vector;
 using std::pair;
 
+enum AreaFunc {
+    LEFT_RECTANGLE_AREA,
+    RIGHT_RECTANGLE_AREA,
+    MEDIUM_RECTANGLE_AREA,
+    TRAPEZOID_AREA,
+    SIMPSON_AREA,
+    THREE_EIGHTHS_AREA
+};
+
 class NumericalMethods {
 public:
     NumericalMethods(std::function<double(double)> func, LogLevel logLevel) {
@@ -78,20 +87,35 @@ public:
 
     Root ThreeEighthsArea(double a, double b, int n);
 
+    Root CalculateArea(AreaFunc areaFunc, double a, double b, int n);
+
+    double RungeArea(AreaFunc, double a, double b, int n, int l);
+
 private:
     std::function<double(double)> func;
 
-    static double cmpX;
-
     Logger logger;
+
+    static double _cmpX;
+
+    double (NumericalMethods::*_derivativeFunc)(double, double);
+
+    const vector<Root (NumericalMethods::*)(double, double, int)> _areaFuncSelector = {
+            &NumericalMethods::LeftRectangleArea,
+            &NumericalMethods::RightRectangleArea,
+            &NumericalMethods::MediumRectangleArea,
+            &NumericalMethods::TrapezoidArea,
+            &NumericalMethods::SimpsonArea,
+            &NumericalMethods::ThreeEighthsArea
+    };
+
+    const int _areaDerivativeIndex[6] = {1, 1, 2, 2, 4, 0};
 
     Root GetRoot(const std::string &methodName, double x1, double x2, int counter);
 
     static bool cmpDX(pair<double, double> a, pair<double, double> b);
 
     double SearchMaximumDerivative(double a, double b, int power);
-
-    double (NumericalMethods::*derivativeFunc)(double, double);
 };
 
 #endif //NUMERICALMETHODS_NUMERICALMETHODS_H

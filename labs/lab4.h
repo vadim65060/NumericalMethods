@@ -7,4 +7,6 @@
 
 [[maybe_unused]] void lab4();
 
+[[maybe_unused]] void lab4_3();
+
 #endif //NUMERICALMETHODS_LAB4_H
